@@ -5,9 +5,7 @@ let options = {
 }
 
 export default {
-	input: "src/test.ts",
 	output: {
-		file: "test.js",
 		format: "cjs"
 	},
 	plugins: [ typescript(options) ]

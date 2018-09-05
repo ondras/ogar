@@ -15,7 +15,7 @@ const config: IPartialOptions = {
 		return result; 
 	},
 
-	async computeFitness(genome: IGenome) { 
+	async computeFitness(genome) { 
 		let str1 = target;
 		let str2 = String.fromCharCode.apply(String, genome);
 		let dist = 0;
@@ -25,9 +25,9 @@ const config: IPartialOptions = {
 		return dist;
 	},
 
-	compareFitnesses(f1: number, f2: number) { return f1-f2; },
+	compareFitnesses(f1, f2) { return f1-f2; },
 
-	mutateGene(value: number, index: number) {
+	mutateGene(value, index) {
 		let diff = Math.floor(Math.random() * 3) - 1;
 		return value + diff; 
 	}
