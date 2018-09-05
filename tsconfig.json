@@ -1,9 +1,8 @@
 {
 	"compilerOptions": {
 		"strict": true,
-		"declaration": false,
 		"noImplicitReturns": true,
 		"noImplicitThis": true,
-		"target": "es2017",
+		"target": "es2017"
 	}
 }
