@@ -6,8 +6,9 @@ const child_process = require("child_process");
 const binary = "/home/ondras/projects/arduino/tetris2/tetris2";
 
 const config: IPartialOptions = {
-	// best so far: 10/   0/0 /2/1.5/0.5:3576
-	//              10/-0.5/-1/2/  1/0.5:3593
+	// best so far: 10/   0/0 /2  /1.5/0.5:3576
+	//              10/-0.5/-1/2  /  1/0.5:3593
+	//               9/   0/-1/0.5/1.5/0.5:4080
 	createGenome() { 
 		let genome = [];
 		for (let i=0;i<count;i++) {
