@@ -1,4 +1,4 @@
-import GA from "./index";
+import GA from "./index.js";
 import { IPartialOptions, IEvaluatedGenome, IGenome } from "./interfaces";
 
 const target = "helloworld";
