@@ -1,6 +1,6 @@
-import { IGenome, IOptions, IPartialOptions, IPopulation, IEvaluatedPopulation } from "./interfaces";
+import { Genome, Options, Population, EvaluatedPopulation } from "./interfaces";
 
-const defaultOptions: IOptions = {
+const defaultOptions: Options = {
 	// initialization
 	populationSize: 10,
 	createGenome() { return []; },
@@ -15,16 +15,20 @@ const defaultOptions: IOptions = {
 	mutateGene(value, index) { return value; }
 }
 
-export default class GA {
-	_options: IOptions;
-	_currentPopulation: IEvaluatedPopulation | null;
+function randomItem<T>(array: T[]) {
+	return array[Math.floor(Math.random() * array.length)];
+}
 
-	constructor(options: IPartialOptions) {
+export default class GA {
+	_options: Options;
+	_currentPopulation: EvaluatedPopulation | null;
+
+	constructor(options: Partial<Options>) {
 		this._options = Object.assign({}, defaultOptions, options);
 		this._currentPopulation = null;
 	}
 
-	async next(): Promise<IEvaluatedPopulation> {
+	async next(): Promise<EvaluatedPopulation> {
 		let oldPopulation = this._currentPopulation;
 		if (!oldPopulation) {
 			oldPopulation = await this._createInitialPopulation();
@@ -37,33 +41,29 @@ export default class GA {
 		return evaluatedPopulation;
 	}
 
-	_randomItem(array: IEvaluatedPopulation) {
-		return array[Math.floor(Math.random() * array.length)];
-	}
-
-	_pickBest(population: IEvaluatedPopulation) {
+	_pickBest(population: EvaluatedPopulation) {
 		const o = this._options;
 		return population.slice(0, o.bestCount);
 	}
 
-	_breedPopulation(best: IEvaluatedPopulation) {
+	_breedPopulation(best: EvaluatedPopulation) {
 		const o = this._options;
 		let population = [];
 		for (let i=0;i<o.populationSize;i++) {
-			let g1 = this._randomItem(best).genome;
-			let g2 = this._randomItem(best).genome;
+			let g1 = randomItem(best).genome;
+			let g2 = randomItem(best).genome;
 			let offspring = this._breedOne(g1, g2);
 			population.push(offspring);
 		}
 		return population;
 	}
 
-	_breedOne(g1: IGenome, g2: IGenome) {
+	_breedOne(g1: Genome, g2: Genome) {
 		let genome = this._crossover(g1, g2);
 		return this._mutate(genome);
 	}
 
-	_mutate(genome: IGenome) {
+	_mutate(genome: Genome) {
 		const o = this._options;
 		let mutated = genome.map((value, index) => {
 			if (Math.random() < o.mutationChance) {
@@ -75,7 +75,7 @@ export default class GA {
 		return mutated;
 	}
 
-	_crossover(g1: IGenome, g2: IGenome) {
+	_crossover(g1: Genome, g2: Genome) {
 		let genesFromFirst = Math.floor(Math.random() * (g1.length+1));
 
 		let indices = g1.map((gene, index) => index);
@@ -105,7 +105,7 @@ export default class GA {
 		return this._evaluatePopulation(result);
 	}
 
-	async _evaluatePopulation(population: IPopulation): Promise<IEvaluatedPopulation> {
+	async _evaluatePopulation(population: Population): Promise<EvaluatedPopulation> {
 		const o = this._options;
 		let promises = population.map(o.computeFitness);
 		let fitnesses = await Promise.all(promises);

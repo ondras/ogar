@@ -1,10 +1,10 @@
-export interface IGenome extends ReadonlyArray<any> {}
+export interface Genome extends Readonly<number[]> {}
 
-export interface IOptions {
+export interface Options {
 	populationSize: number,
-	createGenome: () => IGenome,
+	createGenome: () => Genome,
 
-	computeFitness: (g:IGenome) => Promise<number>,
+	computeFitness: (g:Genome) => Promise<number>,
 	compareFitnesses: (a:number, b:number) => number,
 	bestCount: number,
 
@@ -12,12 +12,10 @@ export interface IOptions {
 	mutateGene: (a:number, b:number) => number
 }
 
-export interface IPartialOptions extends Partial<IOptions> {}
-
-export interface IEvaluatedGenome {
-	genome: IGenome,
+export interface EvaluatedGenome {
+	genome: Genome,
 	fitness: number
 }
 
-export interface IPopulation extends ReadonlyArray<IGenome> {}
-export interface IEvaluatedPopulation extends ReadonlyArray<IEvaluatedGenome> {}
+export interface Population extends Readonly<Genome[]> {}
+export interface EvaluatedPopulation extends Readonly<EvaluatedGenome[]> {}

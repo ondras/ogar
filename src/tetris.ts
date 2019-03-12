@@ -1,22 +1,22 @@
 import GA from "./index";
-import { IPartialOptions, IEvaluatedGenome, IGenome } from "./interfaces";
+import { Options, EvaluatedGenome } from "./interfaces";
 
 const count = 6;
 const child_process = require("child_process");
 const binary = "/home/ondras/projects/arduino/tetris2/tetris2";
 
-interface ICache {
+interface Cache {
     [index: string]: number;
 }
 
-const cache:ICache = {};
+const cache:Cache = {};
 
 function mutateGene(value: number, index: number) {
 	let diff = (Math.floor(Math.random()*31)-15)/10;
 	return value + diff; 
 }
 
-const config: IPartialOptions = {
+const config: Partial<Options> = {
 	//              10/   0/   0/  2/1.5/0.5:3576
 	//              10/-0.5/  -1/  2/  1/0.5:3593
     //             9.0/ 1.0/ 0.5/0.0/1.5/1.0:3592
@@ -55,7 +55,7 @@ const config: IPartialOptions = {
 }
 let ga = new GA(config);
 
-function stringify(item: IEvaluatedGenome) {
+function stringify(item: EvaluatedGenome) {
 	return `${item.genome.map(x=>x.toFixed(1)).join("/")}:${item.fitness}`;
 }
 

@@ -1,9 +1,9 @@
 import GA from "./index.js";
-import { IPartialOptions, IEvaluatedGenome, IGenome } from "./interfaces";
+import { Options, EvaluatedGenome } from "./interfaces";
 
 const target = "helloworld";
 
-const config: IPartialOptions = {
+const config: Partial<Options> = {
 	populationSize: 10,
 	createGenome() { 
 		let len = target.length;
@@ -17,7 +17,7 @@ const config: IPartialOptions = {
 
 	async computeFitness(genome) { 
 		let str1 = target;
-		let str2 = String.fromCharCode.apply(String, genome);
+		let str2 = String.fromCharCode(...genome);
 		let dist = 0;
 		for (let i=0;i<str1.length;i++) {
 			dist += Math.abs(str1.charCodeAt(i) - str2.charCodeAt(i));
@@ -34,8 +34,8 @@ const config: IPartialOptions = {
 }
 let ga = new GA(config);
 
-function stringify(item: IEvaluatedGenome) {
-	return `${String.fromCharCode.apply(String, item.genome)}/${item.fitness}`;
+function stringify(item: EvaluatedGenome) {
+	return `${String.fromCharCode(...item.genome)}/${item.fitness}`;
 }
 
 async function go() {
